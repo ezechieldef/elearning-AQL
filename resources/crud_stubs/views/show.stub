@@ -1,0 +1,28 @@
+@extends('{{layout}}')
+
+@section('template_title')
+    Détails  {{modelTitle}}
+@endsection
+
+@section('content')
+    <section class="">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="float-left">
+                            <span class="card-title">{{ __('Show') }} {{modelTitle}}</span>
+                        </div>
+                        <div class="float-right">
+                            <a href="{{ route('{{modelRoute}}.index') }}" class="btn btn-sm btn-primary"> Retour</a>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        {{viewRows}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

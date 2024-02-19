@@ -68,9 +68,18 @@ class HomeController extends Controller
 
     public function telechargerCertificat($cours_id) {
         // Logique pour récupérer les données du cours et de l'utilisateur
+        $user = auth()->user();
+
+        // Vérifiez si l'utilisateur a terminé le cours
+        if ($user->courses()->where('cours_id', $cours_id)->wherePivot('isCompleted', true)->exists()) {
     
-        $pdf = PDF::loadView('certificat.view', $data);
-    
-        return $pdf->download('certificat.pdf');
+            $data = []
+            $pdf = PDF::loadView('certificat.view', $data);
+        
+            return $pdf->download('certificat.pdf');
+        } else {
+            // Redirigez l'utilisateur avec un message d'erreur
+            return redirect()->route('home')->with('error', 'Vous devez terminer le cours pour retirer votre certificat de succès.');
+        }
     }
 }

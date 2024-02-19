@@ -46,6 +46,6 @@ class User extends Authenticatable
     ];
 
     public function courses() {
-        return $this->belongsToMany(Cours::class, 'suivre_cours')->withPivot('completed');
+        return $this->belongsToMany(Cours::class, 'suivre_cours', 'etudiant_id', 'cours_id')->withPivot('isCompleted');
     }
 }

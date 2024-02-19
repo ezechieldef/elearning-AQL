@@ -21,5 +21,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/showFeedbackForm/{course_id}', [App\Http\Controllers\HomeController::class, 'showFeedbackForm'])->name('feedback.form');
+Route::get('/showFeedbackForm/{cours_id}', [App\Http\Controllers\HomeController::class, 'showFeedbackForm'])->name('feedback.form');
 Route::post('/submitFeedbackForm', [App\Http\Controllers\HomeController::class, 'submitFeedback'])->name('feedback.submit');
+
+Route::get('/telecharger-certificat/{cours_id}', [App\Http\Controllers\HomeController::class, 'telechargerCertificat'])->name('certificat.download');

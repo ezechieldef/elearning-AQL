@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class {{modelName}} extends Model
 {
-    //dddk
+    
     {{softDeletes}}
     static $rules = [{{rules}}
     ];
-    $protected $fileFields = [];
+    protected $fileFields = [];
 
     protected $perPage = 20;
 

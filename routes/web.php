@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\CourController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SessionMeetController;
+use App\Models\SessionMeet;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +24,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home', [HomeController::class, 'accueil'])->name('home');
+Route::get('cours-public', [CourController::class, 'coursPublic'])->name('cours-public');
+Route::get('seance-live', [SessionMeetController::class, 'seancePublics'])->name('seance-live');
+Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('contact', [HomeController::class, 'contact'])->name('contact');
+
+Route::redirect("/", "/home")->name("accueil");

@@ -4,24 +4,15 @@
 <head>
     <title> {{ env('APP_NAME') }} </title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/animate.css') }}">
-
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/owl.theme.default.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/magnific-popup.css') }}">
-
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/bootstrap-datepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/jquery.timepicker.css') }}">
-
-
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/flaticon.css') }}">
-    <link rel="stylesheet" href="{{ asset('studylab-main/css/style.css') }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ asset('elearn-master/styles/bootstrap4/bootstrap.min.css') }}">
+    <link href="{{ asset('elearn-master/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('elearn-master/plugins/video-js/video-js.css" rel="stylesheet') }}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('elearn-master/styles/courses.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('elearn-master/styles/courses_responsive.css') }}">
     @yield('style')
     @yield('style1')
     @yield('style2')
@@ -31,50 +22,70 @@
 </head>
 
 <body>
-    @include('layouts.partials.navbar')
-    <!-- END nav -->
 
-    @include('layouts.partials.banner')
-    <section>
-        @yield('content')
-    </section>
+    <div class="super_container">
 
+        <!-- Header -->
+
+        <header class="header">
+
+            <!-- Top Bar -->
+            @include('layouts.partials.topbar')
+
+            <!-- Header Content -->
+            @include('layouts.partials.header')
+
+            <!-- Header Search Panel -->
+            <div class="header_search_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="header_search_content d-flex flex-row align-items-center justify-content-end">
+                                <form action="#" class="header_search_form">
+                                    <input type="search" class="search_input" placeholder="Search" required="required">
+                                    <button
+                                        class="header_search_button d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Menu -->
+
+
+        <!-- Home -->
+        @if (!($withoutBanner ?? false))
+            @include('layouts.partials.banner')
+        @else
+            <div style="height: 70px;">
+        @endif
+        <!-- Courses -->
+
+    </div>
+    @yield('content')
+
+    <!-- Footer -->
 
     @include('layouts.partials.footer')
+    </div>
 
-
-
-    <!-- loader -->
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
-            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"
-                stroke="#eeeeee" />
-            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4"
-                stroke-miterlimit="10" stroke="#F96D00" />
-        </svg></div>
-
-
-    <script src="{{ asset('studylab-main/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/jquery-migrate-3.0.1.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/popper.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/jquery.easing.1.3.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/jquery.stellar.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/jquery.animateNumber.min.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/scrollax.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-    <script src="{{ asset('studylab-main/js/google-map.js') }}"></script>
-    <script src="{{ asset('studylab-main/js/main.js') }}"></script>
+    <script src="{{ asset('elearn-master/js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('elearn-master/styles/bootstrap4/popper.js') }}"></script>
+    <script src="{{ asset('elearn-master/styles/bootstrap4/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('elearn-master/plugins/easing/easing.js') }}"></script>
+    <script src="{{ asset('elearn-master/plugins/parallax-js-master/parallax.min.js') }}"></script>
+    <script src="{{ asset('elearn-master/js/courses.js') }}"></script>
     @yield('script')
     @yield('script1')
     @yield('script2')
     @yield('script3')
     @yield('script4')
     @yield('script5')
-
 </body>
 
 </html>

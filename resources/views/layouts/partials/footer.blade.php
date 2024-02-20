@@ -1,71 +1,89 @@
-<footer class="bg-dark text-white"> <!-- Old class ftco-footer ftco-no-pt-->
+<footer class="footer mt-3">
     <div class="container">
-        <div class="row mb-5">
-            <div class="col-md pt-5">
-                <div class="ftco-footer-widget pt-md-5 mb-4">
-                    <h2 class="ftco-heading-2">About</h2>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-                        there live the blind texts.</p>
-                    <ul class="ftco-footer-social list-unstyled float-md-left float-lft">
-                        <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
-                        <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
-                        <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md pt-5">
-                <div class="ftco-footer-widget pt-md-5 mb-4 ml-md-5">
-                    <h2 class="ftco-heading-2">Help Desk</h2>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="py-2 d-block">Customer Care</a></li>
-                        <li><a href="#" class="py-2 d-block">Legal Help</a></li>
-                        <li><a href="#" class="py-2 d-block">Services</a></li>
-                        <li><a href="#" class="py-2 d-block">Privacy and Policy</a></li>
-                        <li><a href="#" class="py-2 d-block">Refund Policy</a></li>
-                        <li><a href="#" class="py-2 d-block">Call Us</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md pt-5">
-                <div class="ftco-footer-widget pt-md-5 mb-4">
-                    <h2 class="ftco-heading-2">Recent Courses</h2>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="py-2 d-block">Computer Engineering</a></li>
-                        <li><a href="#" class="py-2 d-block">Web Design</a></li>
-                        <li><a href="#" class="py-2 d-block">Business Studies</a></li>
-                        <li><a href="#" class="py-2 d-block">Civil Engineering</a></li>
-                        <li><a href="#" class="py-2 d-block">Computer Technician</a></li>
-                        <li><a href="#" class="py-2 d-block">Web Developer</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md pt-5">
-                <div class="ftco-footer-widget pt-md-5 mb-4">
-                    <h2 class="ftco-heading-2">Have a Questions?</h2>
-                    <div class="block-23 mb-3">
+        <div class="row">
+
+            <!-- About -->
+            <div class="col-lg-3 footer_col">
+                <div class="footer_about">
+                    <div class="logo_container">
+                        <a href="#">
+                            <div class="logo_content d-flex flex-row align-items-end justify-content-start">
+                                <div class="logo_img"><img src="{{ asset('elearn-master/images/logo.png') }}"
+                                        alt=""></div>
+                                <div class="logo_text">learn</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="footer_about_text">
+                        <p>Maecenas rutrum viverra sapien sed fermentum. Morbi tempor odio eget lacus tempus
+                            pulvinar.</p>
+                    </div>
+                    <div class="footer_social">
                         <ul>
-                            <li><span class="icon fa fa-map-marker"></span><span class="text">203 Fake St.
-                                    Mountain View, San Francisco, California, USA</span></li>
-                            <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2
-                                        392 3929 210</span></a></li>
-                            <li><a href="#"><span class="icon fa fa-paper-plane"></span><span
-                                        class="text">info@yourdomain.com</span></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                         </ul>
+                    </div>
+                    <div class="copyright">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> All rights reserved
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
 
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script> All rights reserved | This template is made with <i class="fa fa-heart"
-                        aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </p>
+            <div class="col-lg-3 footer_col">
+                <div class="footer_links">
+                    <div class="footer_title">Quick menu</div>
+                    <ul class="footer_list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About us</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Facts</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-3 footer_col">
+                <div class="footer_links">
+                    <div class="footer_title">Useful Links</div>
+                    <ul class="footer_list">
+                        <li><a href="courses.html">Courses</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="#">Teachers</a></li>
+                        <li><a href="#">Links</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-3 footer_col">
+                <div class="footer_contact">
+                    <div class="footer_title">Contact Us</div>
+                    <div class="footer_contact_info">
+                        <div class="footer_contact_item">
+                            <div class="footer_contact_title">Address:</div>
+                            <div class="footer_contact_line">1481 Creekside Lane Avila Beach, CA 93424</div>
+                        </div>
+                        <div class="footer_contact_item">
+                            <div class="footer_contact_title">Phone:</div>
+                            <div class="footer_contact_line">+53 345 7953 32453</div>
+                        </div>
+                        <div class="footer_contact_item">
+                            <div class="footer_contact_title">Email:</div>
+                            <div class="footer_contact_line">yourmail@gmail.com</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

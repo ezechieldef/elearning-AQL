@@ -3,6 +3,6 @@
 @endsection
 @section('dashboard-content')
     <div class="">
-        Page d'accueil pour les professeurs
+        Page d'accueil pour les étudiants
     </div>
 @endsection

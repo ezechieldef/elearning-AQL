@@ -33,8 +33,17 @@ class HomeController extends Controller
     function dashboard()
     {
         $user = Auth::user();
-        // $user->assignRole('PROFESSEUR');
-        return view('dashboard.index', compact('user'));
+        if ($user->estUnAdministrateur()) {
+            return  view('dashboard.administateur', compact('user'));
+        }
+        if ($user->estUnProfesseur()) {
+            return  view('dashboard.professeur', compact('user'));
+        }
+        if ($user->estUnEtudiant()) {
+            return view('dashboard.etudiant', compact('user'));
+        }
+
+        return redirect("/");
     }
 
     function accueil()

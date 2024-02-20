@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
@@ -29,5 +29,24 @@ Route::get('cours-public', [CourController::class, 'coursPublic'])->name('cours-
 Route::get('seance-live', [SessionMeetController::class, 'seancePublics'])->name('seance-live');
 Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
+
+
+// EZECHIEL
+
+
+
+// FRUCTUEUX
+
+
+
+
+// MAHOUGNON
+
+
+
+// BRICE
+
+
+
 
 Route::redirect("/", "/home")->name("accueil");

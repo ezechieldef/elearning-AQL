@@ -31,6 +31,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 
+use App\Models\Cours;
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -90,5 +93,9 @@ class User extends Authenticatable
     function sessionMeets()
     {
         return $this->hasMany(SessionMeet::class);
+    }
+    public function courses()
+    {
+        return $this->belongsToMany(Cours::class, 'suivre_cours', 'etudiant_id', 'cours_id')->withPivot('isCompleted');
     }
 }

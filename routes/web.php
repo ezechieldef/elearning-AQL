@@ -47,6 +47,12 @@ Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 // BRICE
 
 
+Route::get('/showFeedbackForm/{cours_id}', [HomeController::class, 'showFeedbackForm'])->name('feedback.form');
+Route::post('/submitFeedbackForm', [HomeController::class, 'submitFeedback'])->name('feedback.submit');
+Route::get('/telecharger-certificat/{cours_id}', [HomeController::class, 'telechargerCertificat'])->name('certificat.download');
+
+
 
 
 Route::redirect("/", "/home")->name("accueil");
+Auth::routes();

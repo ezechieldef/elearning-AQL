@@ -8230,7 +8230,6 @@
             "conflict": {
             },
             "require-dev": {
-                "symfony/console": "^5.4|^6.0|^7.0"
             },
             "bin": [
                 "Resources/bin/yaml-lint"

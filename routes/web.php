@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 // EZ
 Auth::routes();
 
-Route::get('home', [HomeController::class, 'accueil'])->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('cours-public', [CourController::class, 'coursPublic'])->name('cours-public');
 Route::get('seance-live', [LiveDisponibleController::class, 'livePublics'])->name('seance-live');
 Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');

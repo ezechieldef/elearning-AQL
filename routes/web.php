@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
+// EZ
 Auth::routes();
 
 Route::get('home', [HomeController::class, 'accueil'])->name('home');
@@ -32,7 +33,7 @@ Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard')
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 
 
-// EZECHIEL
+
 Route::middleware(["auth", 'role:PROFESSEUR'])->group(function () {
     Route::resource('cours', CourController::class, ['except' => ['show']]);
     Route::get('cours/{cour}/publish', [CourController::class, 'publish'])->name('cours.publish');
@@ -43,16 +44,11 @@ Route::get('cours/{cour}', [CourController::class, 'show'])->name('cours.show');
 Route::get('proposition-live/{id}', [LiveDisponibleController::class, 'show'])->name('proposition-live.show');
 
 
-// FRUCTUEUX
+// FRU
 
+// MA
 
-
-
-// MAHOUGNON
-
-
-
-// BRICE
+// BR
 
 
 Route::get('/showFeedbackForm/{cours_id}', [HomeController::class, 'showFeedbackForm'])->name('feedback.form');

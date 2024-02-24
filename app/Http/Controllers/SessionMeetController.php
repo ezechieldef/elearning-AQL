@@ -108,8 +108,4 @@ class SessionMeetController extends Controller
         return redirect()->route('session-meets.index')
             ->with('success', 'SessionMeet a été supprimé avec success');
     }
-    function seancePublics()
-    {
-        return view('seance-live.index-public');
-    }
 }

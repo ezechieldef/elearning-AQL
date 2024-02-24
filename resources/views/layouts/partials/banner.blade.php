@@ -12,7 +12,7 @@
 <div class="home mb-3">
     <!-- Background image artist https://unsplash.com/@thepootphotographer -->
     <div class="home_background parallax_background parallax-window" data-parallax="scroll"
-        data-image-src="elearn-master/images/courses.jpg" data-speed="0.8"></div>
+        data-image-src="{{ asset('elearn-master/images/courses.jpg') }}" data-speed="0.8"></div>
     <div class="home_container">
         <div class="container">
             <div class="row">

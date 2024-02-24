@@ -12,7 +12,7 @@
                                 <div>(009) 35475 6688933 32</div>
                             </li> --}}
                             <li>
-                                <div>info@elaerntemplate.com</div>
+                                <div>info@elaern.com</div>
                             </li>
                         </ul>
                         <div class="top_bar_login ml-auto">

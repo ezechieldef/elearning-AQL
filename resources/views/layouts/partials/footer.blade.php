@@ -3,7 +3,7 @@
         <div class="row">
 
             <!-- About -->
-            <div class="col-lg-3 footer_col">
+            <div class="col-lg-4 footer_col">
                 <div class="footer_about">
                     <div class="logo_container">
                         <a href="#">
@@ -38,35 +38,28 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 footer_col">
+            <div class="col-lg-4 footer_col">
                 <div class="footer_links">
                     <div class="footer_title">Quick menu</div>
                     <ul class="footer_list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About us</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="#">Facts</a></li>
+                        <li class="{{ Request::is('home*') ? 'active' : '' }}"><a href="{{ route('home') }}">Accueil</a>
+                        </li>
+                        <li class="{{ Request::is('cours-public*') ? 'active' : '' }}"><a
+                                href="{{ route('cours-public') }}">Cours</a></li>
+                        <li class="{{ Request::is('seance-live*') ? 'active' : '' }}"><a
+                                href="{{ route('seance-live') }}">Séance Live</a></li>
+                        <li class="{{ Request::is('dashboard*') ? 'active' : '' }}"><a
+                                href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="{{ Request::is('contact*') ? 'active' : '' }}"><a href="{{ route('contact') }}">Qui
+                                somme nous / Contact</a></li>
+
                     </ul>
                 </div>
             </div>
 
-            <div class="col-lg-3 footer_col">
-                <div class="footer_links">
-                    <div class="footer_title">Useful Links</div>
-                    <ul class="footer_list">
-                        <li><a href="courses.html">Courses</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="news.html">News</a></li>
-                        <li><a href="#">Teachers</a></li>
-                        <li><a href="#">Links</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="col-lg-3 footer_col">
+
+            <div class="col-lg-4 footer_col">
                 <div class="footer_contact">
                     <div class="footer_title">Contact Us</div>
                     <div class="footer_contact_info">

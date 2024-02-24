@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cour;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Providers\FileUploadService;
 
 /**
  * Class CourController
@@ -18,7 +20,8 @@ class CourController extends Controller
      */
     public function index()
     {
-        $cours = Cour::paginate();
+        $professeur = auth()->user();
+        $cours = $professeur->cours()->paginate();
 
         return view('cour.index', compact('cours'))
             ->with('i', (request()->input('page', 1) - 1) * $cours->perPage());
@@ -32,7 +35,10 @@ class CourController extends Controller
     public function create()
     {
         $cour = new Cour();
-        return view('cour.create', compact('cour'));
+        $cour->professeur_id = auth()->id();
+        $categories = Category::pluck("Libelle", "id");
+
+        return view('cour.create', compact('cour', "categories"));
     }
 
     /**
@@ -43,9 +49,18 @@ class CourController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Cour::$rules);
-
-        $cour = Cour::create($request->all());
+        request()->validate([
+            'categorie_id' => 'required|exists:categories,id',
+            'Titre' => 'required|string|max:255',
+            'Description' => 'required|string|max:255',
+            'Contenu' => 'required|string',
+            'Image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $all = $request->all();
+        $all['Professeur_id'] = auth()->id();
+        $uploaded = (new FileUploadService())->handleUpload(request: $request);
+        $all = array_merge($all, $uploaded);
+        $cour = Cour::create($all);
 
         return redirect()->route('cours.index')
             ->with('success', 'Cour a été enregistré avec succès !.');
@@ -73,8 +88,13 @@ class CourController extends Controller
     public function edit($id)
     {
         $cour = Cour::find($id);
+        $categories = Category::pluck("Libelle", "id");
+        if ($cour->professeur_id != auth()->id()) {
+            return redirect()->route('cours.index')
+                ->with('error', 'Vous n\'êtes pas autorisé à modifier ce cours');
+        }
 
-        return view('cour.edit', compact('cour'));
+        return view('cour.edit', compact('cour', 'categories'));
     }
 
     /**
@@ -87,9 +107,18 @@ class CourController extends Controller
     public function update(Request $request, int $id)
     {
         $cour = Cour::findOrFail($id);
-        request()->validate(Cour::$rules);
-
-        $cour->update($request->all());
+        request()->validate([
+            'categorie_id' => 'required|exists:categories,id',
+            'Titre' => 'required|string|max:255',
+            'Description' => 'required|string|max:255',
+            'Contenu' => 'required|string',
+            'Image' => $cour->imageExists() ? "nullable|" : "required" . 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $all = $request->all();
+        $all['Professeur_id'] = auth()->id();
+        $uploaded = (new FileUploadService())->handleUpload(request: $request);
+        $all = array_merge($all, $uploaded);
+        $cour->update($all);
 
         return redirect()->route('cours.index')
             ->with('success', 'Cour a été mis à jour avec succès');
@@ -103,6 +132,7 @@ class CourController extends Controller
     public function destroy($id)
     {
         $cour = Cour::findOrFail($id);
+
         $cour->delete();
 
         return redirect()->route('cours.index')
@@ -110,6 +140,21 @@ class CourController extends Controller
     }
     function coursPublic()
     {
-        return view("cour.cours-public");
+        $cours = Cour::coursDuPulic();
+
+        return view("cour.cours-public", compact("cours"))
+            ->with('i', (request()->input('page', 1) - 1) * $cours->perPage());
+    }
+    function publish(int $id)
+    {
+        $cour = Cour::findOrFail($id);
+        if ($cour->professeur_id != auth()->id()) {
+            return redirect()->route('cours.index')
+                ->with('error', 'Vous n\'êtes pas autorisé à publier ce cours');
+        }
+        $cour->isPublished = !$cour->isPublished;
+        $cour->save();
+        return redirect()->route('cours.index')
+            ->with('success', "L'état de publication du cours a été modifié avec succès");
     }
 }

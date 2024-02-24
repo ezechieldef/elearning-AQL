@@ -1,17 +1,19 @@
 @php
     $breadcrumbs = [
         'Tableau de board' => '/dashboard',
-        'Cours' => '/cours',
+        'Live Proposé' => '',
     ];
-    $pageTitle = 'Liste de mes cours';
+    $pageTitle = 'Liste des Live Proposés';
 @endphp
 @extends('dashboard.template')
-
 @section('dashboard-content')
     <div class="">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
+
+
+
                     <div class="card-body">
                         @if ($message = Session::get('success'))
                             <div class="alert alert-success">
@@ -19,9 +21,8 @@
                             </div>
                         @endif
 
-                        <div class="d-flex justify-content-end  text-end mb-3">
-                            <a href="{{ route('cours.create') }}" class="btn btn-sm btn-success"> <i
-                                    class="fa fa-plus me-3"></i> Nouveau</a>
+                        <div class="text-end mb-3">
+                            <a href="{{ route('proposition-live.create') }}" class="btn btn-sm btn-primary"> Nouveau</a>
                         </div>
 
                         <div class="table-responsive">
@@ -30,41 +31,27 @@
                                     <tr>
                                         <th>No</th>
 
-                                        <th>Categorie</th>
-                                        <th></th>
-
 
                                         <th>Statut</th>
+                                        <th>Categorie</th>
+                                        <th>Titre</th>
+                                        {{-- <th>Description</th> --}}
+
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cours as $cour)
+                                    @foreach ($liveDisponibles as $liveDisponible)
                                         <tr>
                                             <td>{{ ++$i }}</td>
 
-                                            <td>{{ $cour->category()->first()->Libelle }}</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="me-2">
-                                                        <img src="{{ asset($cour->Image) }}" width="50" height="50"
-                                                            class="rounded-circle" alt="">
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="fw-bold">{{ $cour->Titre }}</div>
-                                                        <div class="text-muted"> {{ Str::limit($cour->Description, 50) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="{{ $cour->isPublished ? 'text-success' : 'text-danger' }} ">
-                                                    {{ $cour->etat() }}
-
-                                                </div>
-                                            </td>
-
-
+                                            {{-- <td>{{ $liveDisponible->professeur_id }}</td> --}}
+                                            <td class="{{ $liveDisponible->isPublished ? 'text-success' : 'text-danger' }}">
+                                                {{ $liveDisponible->getStatutStr() }}</td>
+                                            <td>{{ $liveDisponible->category()->first()->Libelle }}</td>
+                                            <td title="{{ $liveDisponible->Titre }}">
+                                                {{ Str::limit($liveDisponible->Titre, 50) }}</td>
+                                            {{-- <td>{{ $liveDisponible->Description }}</td> --}}
 
                                             <td>
                                                 <div class="dropdown">
@@ -75,21 +62,18 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('cours.show', $cour->id) }}"><i
+                                                            href="{{ route('proposition-live.show', $liveDisponible->id) }}"><i
                                                                 class="fa fa-fw fa-eye"></i> {{ __('Voir') }}</a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('cours.edit', $cour->id) }}"><i
+                                                            href="{{ route('proposition-live.edit', $liveDisponible->id) }}"><i
                                                                 class="fa fa-fw fa-edit"></i> {{ __('Modifier') }}</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa fa-fw fa-question"></i>
-                                                            {{ __('Editer Questionnaire') }}</a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('cours.publish', $cour->id) }}"><i
-                                                                class="fa fa-fw {{ $cour->isPublished ? 'fa-close' : 'fa-check' }}"></i>
-                                                            {{ $cour->isPublished ? 'Dépublier le cours' : 'Publier le cours' }}</a>
-
+                                                            href="{{ route('proposition-live.publish', $liveDisponible->id) }}"><i
+                                                                class="fa fa-fw {{ $liveDisponible->isPublished ? 'fa-close' : 'fa-check' }}"></i>
+                                                            {{ $liveDisponible->isPublished ? 'Dépublier le cours' : 'Publier le cours' }}</a>
                                                         <div class="dropdown-divider"></div>
-                                                        <form action="{{ route('cours.destroy', $cour->id) }}"
+                                                        <form
+                                                            action="{{ route('proposition-live.destroy', $liveDisponible->id) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
@@ -108,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $cours->links() !!}
+                {!! $liveDisponibles->links() !!}
             </div>
         </div>
     </div>

@@ -1,53 +1,54 @@
+@php
+    $breadcrumbs = [
+        'Cours' => '/cours-public',
+        $cour->Titre => '',
+    ];
+    $pageTitle = $cour->Titre;
+@endphp
 @extends('layouts.app')
 
-@section('template_title')
-    Détails  Cour
-@endsection
+
 
 @section('content')
-    <section class="">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Cour</span>
-                        </div>
-                        <div class="float-right">
-                            <a href="{{ route('cours.index') }}" class="btn btn-sm btn-primary"> Retour</a>
-                        </div>
-                    </div>
+    <div class="container">
+        <div class="">
 
-                    <div class="card-body">
-                        
-                        <div class="form-group">
-                            <strong>Categorie Id:</strong>
-                            {{ $cour->categorie_id }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Titre:</strong>
-                            {{ $cour->Titre }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Description:</strong>
-                            {{ $cour->Description }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Image:</strong>
-                            {{ $cour->Image }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Contenu:</strong>
-                            {{ $cour->Contenu }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Professeur Id:</strong>
-                            {{ $cour->Professeur_id }}
-                        </div>
+            <div class="card rounded-2 overflow-hidden">
+                <div class="position-relative">
+                    <a href="javascript:void(0)"><img src="{{ asset($cour->Image) }}" alt="..."
+                            class="card-img-top rounded-0 object-fit-cover" alt="..."></a>
 
+                </div>
+                <div class="card-body p-4">
+                    <span class="badge text-bg-light fs-2 rounded-4 py-1 px-2 lh-sm  mt-3">
+                        {{ $cour->category()->first()->Libelle }}</span>
+                    </span>
+                    <h2 class="fs-9 fw-semibold my-4">
+                        {{ $cour->Titre }}
+                    </h2>
+                    <div class="d-flex align-items-center gap-4">
+                        {{-- <div class="d-flex align-items-center gap-2"><i class="ti ti-eye text-dark fs-5"></i>
+                            {{ $enseignement->getViewsCount() }}
+                        </div>
+                        <div class="d-flex align-items-center gap-2"><i class="ti ti-message-2 text-dark fs-5"></i>
+                            {{ $enseignement->getCommentaires()->count() }}
+                        </div> --}}
+                        <div class="d-flex align-items-center fs-2 ms-auto"><i class="ti ti-point text-dark"></i>
+                            {{ $cour->created_at->format('D, M d') }}
+
+                        </div>
                     </div>
                 </div>
+                <div class="card-body border-top p-4">
+                    {!! $cour->Contenu !!}
+                </div>
+                @role('ETUDIANT')
+                    <div class="text-end">
+                        <a href="404" class="btn btn-success px-3">J'ai fini ce cours</a>
+                    </div>
+                @endrole
             </div>
+
         </div>
-    </section>
+    </div>
 @endsection

@@ -41,7 +41,9 @@ class Cour extends Model
         'Contenu' => 'required',
         'Professeur_id' => 'required',
     ];
-    protected $fileFields = [];
+    protected $fileFields = [
+        "Image"
+    ];
 
     protected $perPage = 20;
 
@@ -50,7 +52,7 @@ class Cour extends Model
      *
      * @var array
      */
-    protected $fillable = ['categorie_id', 'Titre', 'Description', 'Image', 'Contenu', 'Professeur_id'];
+    protected $fillable = ['categorie_id', 'Titre', 'Description', 'Image', 'Contenu', 'Professeur_id', 'NoteAdmission', 'isPublished'];
 
 
     /**
@@ -103,8 +105,32 @@ class Cour extends Model
 
     public function deleteFiles()
     {
-        foreach (($this->fileFields ?? []) as $key => $value) {
+        foreach (($this->fileFields ?? []) as $key) {
             Storage::delete($this->$key);
         }
+    }
+    function imageExists(): bool
+    {
+        if (is_null($this->Image) || empty($this->Image)) {
+            return false;
+        }
+        return file_exists(public_path($this->Image));
+    }
+    function etat()
+    {
+        if (!$this->isReadyToBePublished) {
+            return "Veuillez compléter le questionnaire d'examen au cours";
+        }
+
+        if (!$this->isPublished) {
+            return "Non publié";
+        } else {
+            return "Publié";
+        }
+    }
+
+    static function coursDuPulic()
+    {
+        return (new self())->where("isPublished", true)->paginate();
     }
 }

@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+
 use App\Http\Controllers\Controller;
+use App\Models\User as ModelsUser;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Http\Request;
+use HTTP\Models\User;
 
 class LoginController extends Controller
 {
@@ -25,7 +30,19 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function login(Request $request){
+
+        $user = ModelsUser::where('email', $request-> email)->first();
+
+        if (AuthUser::attempt(['email' => $request->email, 'password' => $request->password])){
+            if($user->role === 'ETUDIANT'){
+                return redirect()->route('dashboard.etudiant');
+            }elseif($user->role === 'PROFESSEUR'){
+                return redirect()->route('dashboard.professeur');
+            }
+        }
+    }
+
 
     /**
      * Create a new controller instance.

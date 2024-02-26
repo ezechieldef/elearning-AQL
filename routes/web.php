@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LiveDisponibleController;
 use App\Http\Controllers\SessionMeetController;
 use App\Models\SessionMeet;
@@ -24,7 +25,12 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // EZ
-Auth::routes();
+// Auth::routes();
+//Authentication
+Route::get('getregister', [RegisterController::class, 'getRegister'])->name('getregister');
+Route::post('register', [RegisterController::class, 'register'])->name('register');
+
+
 
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('cours-public', [CourController::class, 'coursPublic'])->name('cours-public');

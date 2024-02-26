@@ -18,8 +18,8 @@
                         <div class="top_bar_login ml-auto">
                             <ul>
                                 @if (is_null(Auth::user()))
-                                    <li><a href="{{ route('register') }}">S'inscrire</a></li>
-                                    <li><a href="{{ route('login') }}">Se connecter</a></li>
+                                    <li><a href="{{ route('getregister') }}">S'inscrire</a></li>
+                                    <li><a href="{{ route('getlogin') }}">Se connecter</a></li>
                                 @else
                                     <li><a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

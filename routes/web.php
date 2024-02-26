@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CourController;
 use App\Http\Controllers\HomeController;
@@ -31,12 +32,13 @@ use Illuminate\Support\Facades\Route;
 //Authentication Mahougnon
 Route::get('getregister', [RegisterController::class, 'getRegister'])->name('getregister');//MA
 Route::post('register', [RegisterController::class, 'register'])->name('register');//MA
-Route::get('getlogin', [LoginController::class, 'getRegister'])->name('getlogin');//MA
-Route::post('login', [LoginController::class, 'register'])->name('login');//MA
+
+Route::get('getlogin', [LoginController::class, 'getLogin'])->name('getlogin');//MA
+Route::post('/Postlogin', [LoginController::class, 'login'])->name('postlogin');//MA
 
 
-Route::get('dashboard/etudiant',LoginController::class,'login')->name('dashboard.etudiant');//MA
-Route::get('dashboard/professeur',LoginController::class,'login')->name('dashboard.professeur');//MA
+Route::get('dashboard/etudiant',LoginController::class,'login')->name('etudiant');//MA
+Route::get('dashboard/professeur',LoginController::class,'login')->name('professeur');//MA
 
 
 

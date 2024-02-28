@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User as ModelsUser;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+// use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Http\Request;
+// use HTTP\Models\User;
 
 class LoginController extends Controller
 {
@@ -20,12 +26,33 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    public function __invoke()
+    {
+        // Your controller logic here
+    }
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function getLogin(Request $request){
+        return view('auth.login');
+    }
+
+    protected function login(Request $request){
+        $credentials = $request->only('email', 'password');
+        $user = ModelsUser::where('email', $request-> email)->first();
+
+        if (Auth::attempt($credentials)){
+            if($user->role === 'ETUDIANT'){
+                return redirect()->route('etudiant');
+            }elseif($user->role === 'PROFESSEUR'){
+                return redirect()->route('professeur');
+            }
+        }
+    }
+
 
     /**
      * Create a new controller instance.

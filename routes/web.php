@@ -1,7 +1,10 @@
 <?php
 
+
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CourController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LiveDisponibleController;
 use App\Http\Controllers\SessionMeetController;
 use App\Models\SessionMeet;
@@ -24,9 +27,24 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // EZ
-Auth::routes();
+// Auth::routes();
 
-Route::get('home', [HomeController::class, 'accueil'])->name('home');
+//Authentication Mahougnon
+Route::get('getregister', [RegisterController::class, 'getRegister'])->name('getregister');//MA
+Route::post('register', [RegisterController::class, 'register'])->name('register');//MA
+
+Route::get('getlogin', [LoginController::class, 'getLogin'])->name('getlogin');//MA
+Route::post('/Postlogin', [LoginController::class, 'login'])->name('postlogin');//MA
+
+
+Route::get('dashboard/etudiant',LoginController::class,'login')->name('etudiant');//MA
+Route::get('dashboard/professeur',LoginController::class,'login')->name('professeur');//MA
+
+
+
+
+
+Route::get('home', [HomeController::class, 'index'])->name('home');//MA
 Route::get('cours-public', [CourController::class, 'coursPublic'])->name('cours-public');
 Route::get('seance-live', [LiveDisponibleController::class, 'livePublics'])->name('seance-live');
 Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
@@ -43,6 +61,9 @@ Route::middleware(["auth", 'role:PROFESSEUR'])->group(function () {
 Route::get('cours/{cour}', [CourController::class, 'show'])->name('cours.show');
 Route::get('proposition-live/{id}', [LiveDisponibleController::class, 'show'])->name('proposition-live.show');
 
+Route::middleware(["auth", 'role:ETUDIANT'])->group(function () {
+
+});
 
 // FRU
 

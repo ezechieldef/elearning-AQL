@@ -49,6 +49,7 @@ class CourController extends Controller
      */
     public function store(Request $request)
     {
+
         request()->validate([
             'categorie_id' => 'required|exists:categories,id',
             'Titre' => 'required|string|max:255',
@@ -87,9 +88,10 @@ class CourController extends Controller
      */
     public function edit($id)
     {
+
         $cour = Cour::find($id);
         $categories = Category::pluck("Libelle", "id");
-        if ($cour->professeur_id != auth()->id()) {
+        if ($cour->Professeur_id != auth()->id()) {
             return redirect()->route('cours.index')
                 ->with('error', 'Vous n\'êtes pas autorisé à modifier ce cours');
         }
@@ -112,7 +114,7 @@ class CourController extends Controller
             'Titre' => 'required|string|max:255',
             'Description' => 'required|string|max:255',
             'Contenu' => 'required|string',
-            'Image' => $cour->imageExists() ? "nullable|" : "required" . 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'Image' => ($cour->imageExists() ? "nullable" : "required") . '|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $all = $request->all();
         $all['Professeur_id'] = auth()->id();
@@ -172,15 +174,11 @@ class CourController extends Controller
     {
         // Recherche du cours par son identifiant.
         $cour = Cour::findOrFail($id);
-
-        // Vérification si l'utilisateur connecté est le propriétaire du cours.
-        if ($cour->professeur_id != auth()->id()) {
-            // Redirection avec un message d'erreur si l'utilisateur n'est pas le propriétaire.
+        if ($cour->Professeur_id != auth()->id()) {
             return redirect()->route('cours.index')
                 ->with('error', 'Vous n\'êtes pas autorisé à publier ce cours');
         }
 
-        // Inversion de l'état de publication du cours.
         $cour->isPublished = !$cour->isPublished;
         $cour->save(); // Sauvegarde des modifications.
 

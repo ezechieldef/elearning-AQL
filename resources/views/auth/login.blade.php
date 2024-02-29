@@ -76,7 +76,7 @@
     </div>
 @endsection
 @section('content')
-    <form method="POST" action="{{ route('postlogin') }}" role="form" class="text-start">
+    <form method="POST" action="{{ route('login') }}" role="form" class="text-start">
         @csrf
 
         <div class="bg-success text-white text-center text-bold p-3 mb-4" style="margin-top: -60px; border-radius:10px;">

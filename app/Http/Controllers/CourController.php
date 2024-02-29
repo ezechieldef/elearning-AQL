@@ -49,6 +49,7 @@ class CourController extends Controller
      */
     public function store(Request $request)
     {
+
         request()->validate([
             'categorie_id' => 'required|exists:categories,id',
             'Titre' => 'required|string|max:255',
@@ -87,9 +88,10 @@ class CourController extends Controller
      */
     public function edit($id)
     {
+
         $cour = Cour::find($id);
         $categories = Category::pluck("Libelle", "id");
-        if ($cour->professeur_id != auth()->id()) {
+        if ($cour->Professeur_id != auth()->id()) {
             return redirect()->route('cours.index')
                 ->with('error', 'Vous n\'êtes pas autorisé à modifier ce cours');
         }
@@ -112,7 +114,7 @@ class CourController extends Controller
             'Titre' => 'required|string|max:255',
             'Description' => 'required|string|max:255',
             'Contenu' => 'required|string',
-            'Image' => $cour->imageExists() ? "nullable|" : "required" . 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'Image' => ($cour->imageExists() ? "nullable" : "required") . '|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $all = $request->all();
         $all['Professeur_id'] = auth()->id();
@@ -148,10 +150,11 @@ class CourController extends Controller
     function publish(int $id)
     {
         $cour = Cour::findOrFail($id);
-        if ($cour->professeur_id != auth()->id()) {
+        if ($cour->Professeur_id != auth()->id()) {
             return redirect()->route('cours.index')
                 ->with('error', 'Vous n\'êtes pas autorisé à publier ce cours');
         }
+
         $cour->isPublished = !$cour->isPublished;
         $cour->save();
         return redirect()->route('cours.index')

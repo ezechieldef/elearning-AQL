@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = ('/dashboard');
 
     /**
      * Create a new controller instance.
@@ -48,39 +46,14 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function getRegister(){
-        return view('auth.register');
-    }
-
-    protected function Register(Request $request)
+    protected function validator(array $data)
     {
-        $validate = $request->validate([
+        return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required'],
+            'role' => ['required', "exists:roles,name"],
         ]);
-
-        if($validate['role']=='ETUDIANT'){
-            $user = User::create([
-                'name' => $validate['name'],
-                'email' => $validate['email'],
-                'password' => Hash::make($validate['password']),
-                'role' => $validate['role'],
-                'role_id'=> 3,
-            ]);
-            return view('dashboard.etudiant',compact('user'));
-        }
-        elseif($validate['role']=='PROFESSEUR'){
-            $user = User::create([
-                'name' => $validate['name'],
-                'email' => $validate['email'],
-                'password' => Hash::make($validate['password']),
-                'role' => $validate['role'],
-                'role_id'=> 2,
-            ]);
-            return view('dashboard.professeur',compact('user'));
-        }
     }
 
     /**
@@ -89,14 +62,18 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    // protected function create(array $data)
-    // {
+    protected function create(array $data)
+    {
 
-    //     if ($data['role'] == 'PROFESSEUR') {
-    //         $user->assignRole('PROFESSEUR');
-    //     } elseif ($data['role'] == 'ETUDIANT') {
-    //         $user->assignRole('ETUDIANT');
-    //     }
-    //     return $user;
-    // }
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'Type' => $data['role'],
+        ]);
+
+        $user->assignRole(strtoupper($data['role']));
+
+        return $user;
+    }
 }

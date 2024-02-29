@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AvisUtilisateur
+ * Représentant un avis laissé par un utilisateur sur un cours.
  *
+ * Cette classe gère les avis des utilisateurs, incluant les notes, les commentaires, et les marques de lecture.
+ * Elle établit également des relations avec le cours concerné, la session de rencontre (si applicable), et l'utilisateur.
  * @property $id
  * @property $user_id
  * @property $cours_id
@@ -25,52 +28,79 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AvisUtilisateur extends Model
 {
-    //dddk
-    
-    static $rules = [
-		'user_id' => 'required',
-		'Note' => 'required',
-		'Commentaire' => 'required',
-		'isRead' => 'required',
-    ];
-    protected $fileFields = [];
-
-    protected $perPage = 20;
-
     /**
-     * Attributes that should be mass-assignable.
+     * Les règles de validation pour un avis utilisateur.
      *
      * @var array
      */
-    protected $fillable = ['user_id','cours_id','session_meet_id','Note','Commentaire','isRead'];
-
+    static $rules = [
+        'user_id' => 'required',
+        'Note' => 'required',
+        'Commentaire' => 'required',
+        'isRead' => 'required',
+    ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Les champs associés à des fichiers dans le stockage.
+     * Actuellement non utilisé car $fileFields est vide.
+     *
+     * @var array
+     */
+    protected $fileFields = [];
+
+    /**
+     * Nombre d'éléments par page pour la pagination.
+     *
+     * @var int
+     */
+    protected $perPage = 20;
+
+    /**
+     * Les attributs qui peuvent être assignés en masse.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'cours_id', 'session_meet_id', 'Note', 'Commentaire', 'isRead'
+    ];
+
+    /**
+     * Obtient le cours associé à cet avis.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne Relation pointant vers le cours concerné par l'avis.
      */
     public function cour()
     {
         return $this->hasOne('App\Models\Cour', 'id', 'cours_id');
     }
-    
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Obtient la session de rencontre associée à cet avis, le cas échéant.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne Relation pointant vers la session de rencontre concernée par l'avis.
      */
     public function sessionMeet()
     {
         return $this->hasOne('App\Models\SessionMeet', 'id', 'session_meet_id');
     }
-    
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Obtient l'utilisateur qui a laissé cet avis.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne Relation pointant vers l'utilisateur ayant créé l'avis.
      */
     public function user()
     {
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
-    
-    public function deleteFiles(){
-        foreach (($this->fileFields??[]) as $key => $value) {
+
+    /**
+     * Supprime les fichiers associés à cet avis du stockage.
+     * Actuellement, cette fonction ne fait rien puisque `fileFields` est vide.
+     */
+    public function deleteFiles()
+    {
+        foreach (($this->fileFields ?? []) as $key => $value) {
             Storage::delete($this->$key);
         }
     }

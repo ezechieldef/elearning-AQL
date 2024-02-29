@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Cour
+ * Modèle Cour représentant un cours dans l'application.
+ *
+ * Ce modèle gère les informations relatives aux cours, incluant les métadonnées de base comme
+ * le titre, la description, et la gestion des relations avec d'autres entités telles que les avis,
+ * les catégories, les pièces jointes, et les questions associées.
  *
  * @property $id
  * @property $categorie_id
@@ -34,6 +38,11 @@ class Cour extends Model
     //dddk
     use SoftDeletes;
 
+    /**
+     * Les règles de validation pour un cours.
+     *
+     * @var array
+     */
     static $rules = [
         'categorie_id' => 'required',
         'Titre' => 'required',
@@ -41,14 +50,25 @@ class Cour extends Model
         'Contenu' => 'required',
         'Professeur_id' => 'required',
     ];
+
+    /**
+     * Les champs associés à des fichiers dans le stockage.
+     *
+     * @var array
+     */
     protected $fileFields = [
         "Image"
     ];
 
+    /**
+     * Nombre d'éléments par page pour la pagination.
+     *
+     * @var int
+     */
     protected $perPage = 20;
 
     /**
-     * Attributes that should be mass-assignable.
+     * Les attributs qui peuvent être assignés en masse.
      *
      * @var array
      */
@@ -56,6 +76,8 @@ class Cour extends Model
 
 
     /**
+     * Obtient les avis des utilisateurs associés à ce cours.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function avisUtilisateurs()
@@ -64,6 +86,8 @@ class Cour extends Model
     }
 
     /**
+     * Obtient la catégorie associée à ce cours.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function category()
@@ -72,6 +96,8 @@ class Cour extends Model
     }
 
     /**
+     * Obtient les pièces jointes associées à ce cours.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function pieceJointes()
@@ -80,6 +106,8 @@ class Cour extends Model
     }
 
     /**
+     * Obtient les questions associées à ce cours.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function questions()
@@ -88,6 +116,8 @@ class Cour extends Model
     }
 
     /**
+     * Obtient l'inscription au cours associée.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function suivreCour()
@@ -96,6 +126,8 @@ class Cour extends Model
     }
 
     /**
+     * Obtient le professeur associé à ce cours.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
@@ -103,12 +135,21 @@ class Cour extends Model
         return $this->hasOne('App\Models\User', 'id', 'Professeur_id');
     }
 
+    /**
+     * Supprime les fichiers associés à ce cours du stockage.
+     */
     public function deleteFiles()
     {
         foreach (($this->fileFields ?? []) as $key) {
             Storage::delete($this->$key);
         }
     }
+
+    /**
+     * Vérifie si l'image du cours existe dans le système de fichiers.
+     *
+     * @return bool Retourne vrai si l'image existe, faux sinon.
+     */
     function imageExists(): bool
     {
         if (is_null($this->Image) || empty($this->Image)) {
@@ -116,6 +157,12 @@ class Cour extends Model
         }
         return file_exists(public_path($this->Image));
     }
+
+    /**
+     * Détermine l'état de publication du cours.
+     *
+     * @return string L'état de publication du cours.
+     */
     function etat()
     {
         if (!$this->isReadyToBePublished) {
@@ -129,6 +176,11 @@ class Cour extends Model
         }
     }
 
+    /**
+     * Récupère les cours destinés au public.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     static function coursDuPulic()
     {
         return (new self())->where("isPublished", true)->paginate();

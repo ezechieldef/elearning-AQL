@@ -14,7 +14,6 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-<<<<<<< HEAD
         // Créer des permissions
         $viewMenuPermission = Permission::create(['name' => 'view menu']);
         $editSettingsPermission = Permission::create(['name' => 'edit settings']);
@@ -24,18 +23,5 @@ class RoleSeeder extends Seeder
             $admin->givePermissionTo($editSettingsPermission);
         }
 
-=======
-        $roles = [
-            [
-                'name' => 'SUPER-ADMIN'
-            ],
-            [
-                'name' => 'PROFESSEUR'
-            ],
-            [
-                'name' => 'ETUDIANT'
-            ],
-        ];
->>>>>>> 3a1caa1b41723dfb1a1372f79670332688a29737
     }
 }

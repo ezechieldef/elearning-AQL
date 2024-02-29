@@ -138,22 +138,53 @@ class CourController extends Controller
         return redirect()->route('cours.index')
             ->with('success', 'Cour a été supprimé avec success');
     }
+    /**
+     * Affiche la liste des cours disponibles pour le public.
+     *
+     * Cette fonction récupère les cours destinés au public à partir de la méthode `coursDuPulic`
+     * de modèle `Cour`, puis passe ces cours à la vue `cour.cours-public`.
+     * Elle calcule également l'index de pagination basé sur la page actuelle et le nombre de cours par page.
+     *
+     * @return \Illuminate\View\View Retourne la vue avec les cours publics et l'index de pagination.
+     */
     function coursPublic()
     {
+        // Récupération des cours disponibles pour le public.
         $cours = Cour::coursDuPulic();
 
+        // Retourne la vue des cours publics avec la variable `cours` et l'index de pagination.
         return view("cour.cours-public", compact("cours"))
             ->with('i', (request()->input('page', 1) - 1) * $cours->perPage());
     }
+
+    /**
+     * Change l'état de publication d'un cours.
+     *
+     * Cette fonction vérifie d'abord si l'utilisateur actuellement connecté est bien le professeur qui a créé le cours.
+     * Si ce n'est pas le cas, l'utilisateur est redirigé vers la liste des cours avec un message d'erreur.
+     * Si l'utilisateur est le professeur du cours, l'état de publication du cours est inversé.
+     * Le cours est ensuite enregistré avec son nouvel état et l'utilisateur est redirigé vers la liste des cours avec un message de succès.
+     *
+     * @param int $id Identifiant du cours à publier ou dépublier.
+     * @return \Illuminate\Http\RedirectResponse Redirection vers la liste des cours avec un message de succès ou d'erreur.
+     */
     function publish(int $id)
     {
+        // Recherche du cours par son identifiant.
         $cour = Cour::findOrFail($id);
+
+        // Vérification si l'utilisateur connecté est le propriétaire du cours.
         if ($cour->professeur_id != auth()->id()) {
+            // Redirection avec un message d'erreur si l'utilisateur n'est pas le propriétaire.
             return redirect()->route('cours.index')
                 ->with('error', 'Vous n\'êtes pas autorisé à publier ce cours');
         }
+
+        // Inversion de l'état de publication du cours.
         $cour->isPublished = !$cour->isPublished;
-        $cour->save();
+        $cour->save(); // Sauvegarde des modifications.
+
+        // Redirection vers la liste des cours avec un message de succès.
         return redirect()->route('cours.index')
             ->with('success', "L'état de publication du cours a été modifié avec succès");
     }

@@ -27,4 +27,25 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    // public function render($request, Throwable $exception)
+    // {
+    //     // Personnaliser la page pour les erreurs 404
+    //     if ($exception instanceof NotFoundHttpException || $exception instanceof ModelNotFoundException) {
+    //         return response()->view('errors.errors', [], 404);
+    //     }
+
+    //     // Personnaliser la page pour les erreurs 403
+    //     if ($exception instanceof AuthorizationException) {
+    //         return response()->view('errors.errors', [], 403);
+    //     }
+
+    //     // Personnaliser la page pour les erreurs 500
+    //     if ($exception instanceof \ErrorException) {
+    //         return response()->view('errors.errors', [], 500);
+    //     }
+
+    //     // Pour toutes les autres erreurs, rediriger vers une page d'erreur générale
+    //     // return response()->view('errors.errors', ['exception' => $exception], $exception->getStatusCode() ?? 500);
+    // }
 }

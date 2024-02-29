@@ -10,23 +10,26 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * Class User
+ * Modèle User
  *
- * @property $id
- * @property $name
- * @property $email
- * @property $email_verified_at
- * @property $password
- * @property $remember_token
- * @property $created_at
- * @property $updated_at
+ * Représente un utilisateur dans le système, pouvant être un étudiant, un professeur, ou un administrateur.
+ * Utilise Laravel Sanctum pour les tokens API, Spatie Permission pour les rôles et permissions, et les notifications.
  *
- * @property Cour[] $cours
- * @property AvisUtilisateur[] $avisUtilisateurs
- * @property SessionMeet[] $sessionMeets
- * @property bool $estUnProfesseur
- * @property bool $estUnEtudiant
- * @property bool $estUnAdministrateur
+ * @property int $id Identifiant unique de l'utilisateur
+ * @property string $name Nom de l'utilisateur
+ * @property string $email Adresse email de l'utilisateur
+ * @property \Illuminate\Support\Carbon|null $email_verified_at Date de vérification de l'email
+ * @property string $password Mot de passe de l'utilisateur
+ * @property string|null $remember_token Token de "Se souvenir de moi"
+ * @property \Illuminate\Support\Carbon|null $created_at Date de création du compte utilisateur
+ * @property \Illuminate\Support\Carbon|null $updated_at Date de dernière mise à jour du compte utilisateur
+ *
+ * @property Cour[] $cours Cours enseignés par le professeur
+ * @property AvisUtilisateur[] $avisUtilisateurs Avis laissés par ou pour l'utilisateur
+ * @property SessionMeet[] $sessionMeets Sessions de rencontre associées à l'utilisateur
+ * @property bool $estUnProfesseur Indique si l'utilisateur est un professeur
+ * @property bool $estUnEtudiant Indique si l'utilisateur est un étudiant
+ * @property bool $estUnAdministrateur Indique si l'utilisateur est un administrateur
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -39,7 +42,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
-     * The attributes that are mass assignable.
+     * Attributs pouvant être assignés en masse.
      *
      * @var array<int, string>
      */
@@ -47,12 +50,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'role_id'
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Attributs cachés lors de la sérialisation.
      *
      * @var array<int, string>
      */
@@ -62,45 +63,89 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Attributs devant être transformés.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 
+    /**
+     * Détermine si l'utilisateur est un professeur.
+     *
+     * @return bool
+     */
     public function estUnProfesseur()
     {
-        return strtoupper($this->Type) === 'PROFESSEUR' && $this->hasRole('PROFESSEUR');
+        return $this->hasRole('PROFESSEUR');
     }
+
+    /**
+     * Détermine si l'utilisateur est un étudiant.
+     *
+     * @return bool
+     */
     public function estUnEtudiant()
     {
-        return strtoupper($this->Type) === 'ETUDIANT' && $this->hasRole('ETUDIANT');
+        return $this->hasRole('ETUDIANT');
     }
+
+    /**
+     * Détermine si l'utilisateur est un administrateur.
+     *
+     * @return bool
+     */
     public function estUnAdministrateur()
     {
         return $this->hasRole('SUPER-ADMIN');
     }
+
+    /**
+     * Relation avec les cours enseignés par le professeur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     function cours()
     {
-        return $this->hasMany(Cour::class, "Professeur_id");
+        return $this->hasMany(Cour::class, "professeur_id");
     }
+
+    /**
+     * Relation avec les avis utilisateurs associés.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     function avisUtilisateurs()
     {
         return $this->hasMany(AvisUtilisateur::class);
     }
+
+    /**
+     * Relation avec les sessions de rencontre associées à l'utilisateur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     function sessionMeets()
     {
         return $this->hasMany(SessionMeet::class);
     }
+
+    /**
+     * Relation many-to-many avec les cours suivis par l'étudiant.
+     * Inclut la pivot 'isCompleted' pour indiquer si le cours a été complété.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function courses()
     {
         return $this->belongsToMany(Cours::class, 'suivre_cours', 'etudiant_id', 'cours_id')->withPivot('isCompleted');
     }
+
     /**
-     * Les proposition de live disponible
+     * Relation avec les propositions de live disponibles pour le professeur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function liveDisponibles()
     {

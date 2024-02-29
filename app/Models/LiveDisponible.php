@@ -6,26 +6,28 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class LiveDisponible
+ * Classe LiveDisponible
+ * Représente un live disponible créé par un professeur pouvant être publié pour les utilisateurs.
  *
- * @property $id
- * @property $professeur_id
- * @property $isPublished
- * @property $categorie_id
- * @property $Titre
- * @property $Description
- * @property $created_at
- * @property $updated_at
+ * @property int $id Identifiant unique du live disponible
+ * @property int $professeur_id Identifiant du professeur qui propose le live
+ * @property bool $isPublished Statut de publication du live
+ * @property int $categorie_id Identifiant de la catégorie associée au live
+ * @property string $Titre Titre du live
+ * @property string $Description Description détaillée du live
+ * @property \Illuminate\Support\Carbon|null $created_at Date de création
+ * @property \Illuminate\Support\Carbon|null $updated_at Date de dernière mise à jour
  *
- * @property Category $category
- * @property User $user
+ * @property Category $category Catégorie associée au live
+ * @property User $user Professeur qui propose le live
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class LiveDisponible extends Model
 {
-
-
+    /**
+     * Règles de validation pour les champs du modèle.
+     */
     static $rules = [
         'professeur_id' => 'required',
         'isPublished' => 'required',
@@ -33,20 +35,18 @@ class LiveDisponible extends Model
         'Titre' => 'required',
         'Description' => 'required',
     ];
-    protected $fileFields = [];
-
-    protected $perPage = 20;
 
     /**
-     * Attributes that should be mass-assignable.
+     * Champs pouvant être assignés en masse.
      *
      * @var array
      */
     protected $fillable = ['professeur_id', 'isPublished', 'categorie_id', 'Titre', 'Description'];
 
-
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Obtient la catégorie associée au live.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne Relation HasOne avec Category
      */
     public function category()
     {
@@ -54,27 +54,40 @@ class LiveDisponible extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Obtient le professeur qui propose le live.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne Relation HasOne avec User
      */
     public function user()
     {
         return $this->hasOne('App\Models\User', 'id', 'professeur_id');
     }
 
+    /**
+     * Supprime les fichiers associés au live lors de la suppression de l'entrée.
+     */
     public function deleteFiles()
     {
         foreach (($this->fileFields ?? []) as $key => $value) {
             Storage::delete($this->$key);
         }
     }
+
+    /**
+     * Retourne le statut de publication du live sous forme de chaîne de caractères.
+     *
+     * @return string Le statut de publication
+     */
     public function getStatutStr()
     {
-        if ($this->isPublished) {
-            return "Publié";
-        } else {
-            return "Non publié";
-        }
+        return $this->isPublished ? "Publié" : "Non publié";
     }
+
+    /**
+     * Requête pour obtenir tous les lives publiés.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder Requête pour les lives publiés
+     */
     static function livesDuPulic()
     {
         return LiveDisponible::where('isPublished', true);
